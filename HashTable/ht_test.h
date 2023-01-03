@@ -5,16 +5,16 @@ supports size changing!
 
 */
 
-
 #ifndef _HASH_TABLE_
 #define _HASH_TABLE_
 
-#include <iostream>
+#include "../prime/prime.h"
 
-template <typename K, typename V>
+template <typename Key, typename Data>
 class HashTable {
  public:
-  HashTable(int size = 16) : size_(size), table_(new Node*[size]()) {}
+  HashTable(int size = 17) : size_(size), table_(new Node*[size]()){}
+
   ~HashTable() {
     for (int i = 0; i < size_; i++) {
       auto *node = table_[i];
@@ -27,44 +27,49 @@ class HashTable {
     delete[] table_;
   }
 
-  void put(K key, V value) {
-    int index = hash(key) % size_;
+  void put(Key key, Data data) {
+    int index = hash(key, size_);
     auto *node = table_[index];
     while (node) {
       if (node->key == key) {
-        node->value = value;
+        node->data = data;
         return;
       }
       node = node->next;
     }
-    node = new Node{key, value};
+    node = new Node{key, data};
     node->next = table_[index];
     table_[index] = node;
     if (++count_ > size_) {
-      resize(size_ * 2);
+      int new_size = closer_prime(size_ * 2);
+      resize(new_size);
     }
   }
 
-  V get(K key) {
-    int index = hash(key) % size_;
+  Data get(Key key) {
+    int index = hash(key, size_);
+    std::cout << "the object with id :" << key << "is placed in bucket number:" << index << std::endl;
     auto *node = table_[index];
     while (node) {
       if (node->key == key) {
-        return node->value;
+        return node->data;
       }
       node = node->next;
     }
-    return V{};
+    return Data{};
   }
 
-  void remove(K key) {
-    int index = hash(key) % size_;
+  void remove(Key key) {
+    int index = hash(key, size_);
     auto *node = table_[index];
     if (node && node->key == key) {
       table_[index] = node->next;
       delete node;
       if (--count_ < size_ / 4) {
-        resize(size_ / 2);
+        int new_size = size_ / 2;
+        if(!is_prime(new_size))
+          new_size = closer_prime(new_size);
+        resize(new_size);
       }
       return;
     }
@@ -74,7 +79,8 @@ class HashTable {
         node->next = temp->next;
         delete temp;
         if (--count_ < size_ / 4) {
-          resize(size_ / 2);
+          int new_size = closer_prime(size_ / 2);
+          resize(new_size);
         }
         return;
       }
@@ -82,8 +88,8 @@ class HashTable {
     }
   }
 
-  bool contains(K key) {
-    int index = hash(key) % size_;
+  bool contains(Key key) {
+    int index = hash(key, size_);
     auto *node = table_[index];
     while (node) {
       if (node->key == key) {
@@ -98,16 +104,40 @@ class HashTable {
     return count_;
   }
 
- private:
-  int size_;
-  int count_ = 0;
+  int Table_size()
+  {
+    return size_;
+  }
 
+
+  void Table_Diagram()
+  {
+    for (int i = 0; i < size_; i++)
+    {
+      std::cout << std::endl << i << " <+> ";
+      int c = 0;
+      Node* node = table_[i];
+      while (node != nullptr)
+      {
+        c++;
+        node = node->next;
+      }
+      
+      std::cout << c << std::endl;
+
+    }
+    
+  }
+
+ private:
   struct Node {
-    K key;
-    V value;
+    Key key;
+    Data data;
     Node *next;
   };
+  int size_;
   Node **table_;
+  int count_ = 0;
 
   void resize(int new_size) {
     auto *new_table = new Node*[new_size]();
@@ -116,7 +146,7 @@ class HashTable {
       while (node) {
         auto *temp = node;
         node = node->next;
-        int index = hash(temp->key) % new_size;
+        int index = hash(temp->key, new_size) % new_size;
         temp->next = new_table[index];
         new_table[index] = temp;
       }
@@ -126,11 +156,11 @@ class HashTable {
     size_ = new_size;
   }
 
-  int hash(K key) {
-    // TODO: Implement a hash function for key of type K
-    return 0;
+  std::size_t hash(const Key& key, std::size_t table_size) {
+    std::size_t multiplier = 2654435761;
+    std::size_t shift = 32;
+    return static_cast<std::size_t>(static_cast<std::size_t>(multiplier * key) >> shift) % table_size;
   }
 };
-
 
 #endif
