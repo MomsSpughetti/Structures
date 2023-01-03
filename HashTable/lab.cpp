@@ -8,7 +8,7 @@ int main() {
 
     std::cout << " size is :" << ht.Table_size() << std::endl;
 
-  for(int i =0; i < 1000; i++)
+  for(int i =0; i < 10000; i++)
   {
     ht.put(i, i);
     if(prev_size != ht.Table_size()){
@@ -28,7 +28,7 @@ int main() {
         ht.Table_Diagram();
     std::cout << std::endl;
 
-  for(int i = 24; i < 1000; i++)
+  for(int i = 24; i < 10000; i++)
   {
     ht.remove(i);
     if(prev_size != ht.Table_size()){
@@ -41,7 +41,7 @@ int main() {
         ht.Table_Diagram();
     std::cout << std::endl;
 
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < 10000; i++)
   {
     std::cout << ht.get(i) << " ";
   }
@@ -49,7 +49,7 @@ int main() {
         ht.Table_Diagram();
     std::cout << std::endl;
 
-    for(int i =0; i < 1000; i++)
+    for(int i =0; i < 10000; i++)
   {
     ht.put(i, i);
     if(prev_size != ht.Table_size()){

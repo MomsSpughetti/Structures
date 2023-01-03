@@ -17,9 +17,9 @@ class HashTable {
 
   ~HashTable() {
     for (int i = 0; i < size_; i++) {
-      auto *node = table_[i];
+      Node *node = table_[i];
       while (node) {
-        auto *temp = node;
+        Node *temp = node;
         node = node->next;
         delete temp;
       }
@@ -29,10 +29,10 @@ class HashTable {
 
   void put(Key key, Data data) {
     int index = hash(key, size_);
-    auto *node = table_[index];
+    Node *node = table_[index];
     while (node) {
       if (node->key == key) {
-        node->data = data;
+        //node->data = data;
         return;
       }
       node = node->next;
@@ -48,8 +48,7 @@ class HashTable {
 
   Data get(Key key) {
     int index = hash(key, size_);
-    std::cout << "the object with id :" << key << "is placed in bucket number:" << index << std::endl;
-    auto *node = table_[index];
+    Node *node = table_[index];
     while (node) {
       if (node->key == key) {
         return node->data;
@@ -61,7 +60,7 @@ class HashTable {
 
   void remove(Key key) {
     int index = hash(key, size_);
-    auto *node = table_[index];
+    Node *node = table_[index];
     if (node && node->key == key) {
       table_[index] = node->next;
       delete node;
@@ -75,7 +74,7 @@ class HashTable {
     }
     while (node) {
       if (node->next && node->next->key == key) {
-        auto *temp = node->next;
+        Node *temp = node->next;
         node->next = temp->next;
         delete temp;
         if (--count_ < size_ / 4) {
@@ -90,7 +89,7 @@ class HashTable {
 
   bool contains(Key key) {
     int index = hash(key, size_);
-    auto *node = table_[index];
+    Node *node = table_[index];
     while (node) {
       if (node->key == key) {
         return true;
@@ -140,11 +139,11 @@ class HashTable {
   int count_ = 0;
 
   void resize(int new_size) {
-    auto *new_table = new Node*[new_size]();
+    Node **new_table = new Node*[new_size]();
     for (int i = 0; i < size_; i++) {
-      auto *node = table_[i];
+      Node *node = table_[i];
       while (node) {
-        auto *temp = node;
+        Node *temp = node;
         node = node->next;
         int index = hash(temp->key, new_size) % new_size;
         temp->next = new_table[index];

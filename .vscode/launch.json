@@ -8,7 +8,7 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "C://Users//abdal//Technion//Data_Structures//Structures//HashTable//lab.exe",
+            "program": "C://Users//abdal//Technion//Data_Structures//Structures//AVLTree//speacialEditions//RankedAVLTree//lab.exe",
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}"
         }

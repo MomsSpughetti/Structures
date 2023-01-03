@@ -40,7 +40,7 @@ class HashTable {
     while (node) {
       if (node->key == key) {
         // Update the value for the key if it exists
-        node->data = data;
+        //node->data = data;
         return;
       }
       node = node->next;
