@@ -1,11 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "RankedTree.h"
-
 #include <cassert>
-
-#include <cassert>
-#include <iostream>
 
 int main() {
   AVLTree<int, std::string> tree;
@@ -31,14 +27,17 @@ int main() {
   assert(tree.Find(9) == nullptr);
 
   // Test the rank and find by rank functions
-  assert(tree.GetRank(5) == 2);
-  assert(tree.GetRank(6) == 3);
-  assert(tree.GetRank(7) == 4);
-  assert(tree.GetRank(8) == 5);
-  assert(tree.GetRank(9) == 6);
+  assert(tree.GetRank(2) == 0);
+  assert(tree.GetRank(3) == 1);
+  assert(tree.GetRank(4) == 2);
+  assert(tree.GetRank(5) == 3);
+  assert(tree.GetRank(6) == 4);
+  assert(tree.GetRank(7) == 5);
+  assert(tree.GetRank(8) == 6);
+
   assert(tree.FindByRank(0)->data == "date");
-  assert(tree.FindByRank(3)->data == "elderberry");
-  assert(tree.FindByRank(5)->data == "grape");
+  assert(tree.FindByRank(2)->data == "elderberry");
+  assert(tree.FindByRank(5)->data == "cherry");
 
   std::cout << "Find by rank (0): " << tree.FindByRank(0)->data << std::endl;
   std::cout << "Find by rank (3): " << tree.FindByRank(3)->data << std::endl;
@@ -84,7 +83,7 @@ int main() {
   assert(tree.GetRank(8) == 6);
   assert(tree.GetRank(9) == 7);
   assert(tree.FindByRank(0)->data == "date");
-  assert(tree.FindByRank(3)->data == "fig");
+  assert(tree.FindByRank(3)->data == "apple");
   assert(tree.FindByRank(5)->data == "cherry");
   assert(tree.FindByRank(6)->data == "grape");
   assert(tree.FindByRank(7) == nullptr);
@@ -105,8 +104,8 @@ int main() {
   std::cout << std::endl;
 
   // Test the find by rank function one more time
-  assert(tree.FindByRank(0)->data == "apple");
-  assert(tree.FindByRank(1)->data == "banana");
+  assert(tree.FindByRank(0)->data == "banana");
+  assert(tree.FindByRank(1)->data == "apple");
   assert(tree.FindByRank(2)->data == "cherry");
   assert(tree.FindByRank(3) == nullptr);
 
@@ -118,6 +117,15 @@ int main() {
   std::cout << "In-order traversal: ";
   tree.printInOrder();
   std::cout << std::endl;
+
+  Node<int, std::string> ** arr = tree.TreeNodesToArray();
+  for(int i = 0; i < tree.get_size(); i++)
+  {
+    std::cout << "[" << arr[i]->key << ", " << arr[i]->data << "] ";
+  }
+
+
+  delete [] arr;
 
   return 0;
 }
