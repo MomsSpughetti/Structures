@@ -28,7 +28,7 @@ class HashTable {
   }
 
   void put(Key key, Data data) {
-    int index = hash(key, size_);
+    unsigned int index = hash(key, size_);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     Node *node = table_[index];
     while (node) {
       if (node->key == key) {
@@ -46,20 +46,20 @@ class HashTable {
     }
   }
 
-  Data get(Key key) {
-    int index = hash(key, size_);
+  Data* get(Key key) {
+    unsigned int index = hash(key, size_);
     Node *node = table_[index];
     while (node) {
       if (node->key == key) {
-        return node->data;
+        return &(node->data);
       }
       node = node->next;
     }
-    return Data{};
+    return nullptr;
   }
 
   void remove(Key key) {
-    int index = hash(key, size_);
+    unsigned int index = hash(key, size_);
     Node *node = table_[index];
     if (node && node->key == key) {
       table_[index] = node->next;
@@ -88,7 +88,7 @@ class HashTable {
   }
 
   bool contains(Key key) {
-    int index = hash(key, size_);
+    unsigned int index = hash(key, size_);
     Node *node = table_[index];
     while (node) {
       if (node->key == key) {
@@ -109,7 +109,7 @@ class HashTable {
   }
 
 
-  void Table_Diagram()
+  void Table_Diagram() const
   {
     for (int i = 0; i < size_; i++)
     {
@@ -128,7 +128,8 @@ class HashTable {
     
   }
 
- private:
+//Errors
+
   struct Node {
     Key key;
     Data data;
@@ -138,6 +139,7 @@ class HashTable {
   Node **table_;
   int count_ = 0;
 
+ private:
   void resize(int new_size) {
     Node **new_table = new Node*[new_size]();
     for (int i = 0; i < size_; i++) {
@@ -145,7 +147,7 @@ class HashTable {
       while (node) {
         Node *temp = node;
         node = node->next;
-        int index = hash(temp->key, new_size) % new_size;
+        unsigned int index = hash(temp->key, new_size) % new_size;
         temp->next = new_table[index];
         new_table[index] = temp;
       }
@@ -155,11 +157,25 @@ class HashTable {
     size_ = new_size;
   }
 
-  std::size_t hash(const Key& key, std::size_t table_size) {
+  std::size_t Nhash(const Key& key, std::size_t table_size) {
     std::size_t multiplier = 2654435761;
     std::size_t shift = 32;
-    return static_cast<std::size_t>(static_cast<std::size_t>(multiplier * key) >> shift) % table_size;
+    std::size_t index = static_cast<std::size_t>(static_cast<std::size_t>(multiplier * key) >> shift) % table_size;;
+    //return static_cast<std::size_t>(static_cast<std::size_t>(multiplier * key)) % table_size;
+    return index;
   }
+
+//FNV hash (better than the previous one)
+unsigned int hash(const Key& key, std::size_t table_size) {
+  unsigned int hash = 2166136261u; // Initialize the hash to a prime value
+  const unsigned char *p = reinterpret_cast<const unsigned char*>(&key);
+  size_t size = sizeof(Key);
+  for (size_t i = 0; i < size; ++i) {
+    hash = (hash ^ p[i]) * 16777619u; // Multiply by a prime value
+  }
+  return hash % table_size; // Return the index in the range [0, table_size-1]
+}
+
 };
 
 #endif

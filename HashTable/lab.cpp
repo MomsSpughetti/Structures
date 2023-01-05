@@ -1,4 +1,4 @@
-#include "ht_test.h"
+#include "ht_tested.h"
 
 int main() {
 
@@ -43,7 +43,7 @@ int main() {
 
     for(int i = 0; i < 10000; i++)
   {
-    std::cout << ht.get(i) << " ";
+    std::cout << *ht.get(i) << " ";
   }
     std::cout << std::endl;
         ht.Table_Diagram();
@@ -63,7 +63,7 @@ int main() {
 
     for(int i = 0; i < ht.size(); i++)
   {
-    std::cout << ht.get(i) << " ";
+    std::cout << *ht.get(i) << " ";
   }
     std::cout << " size is :" << ht.Table_size() << std::endl;
 

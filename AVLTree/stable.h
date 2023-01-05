@@ -16,7 +16,7 @@ int max(int a, int b)
 }
 
 // Node class template
-template <typename Key, typename Data>
+template <class Key, class Data>
 class Node {
  public:
   Key key;
@@ -30,7 +30,7 @@ class Node {
 };
 
 // AVL tree class template
-template <typename Key, typename Data>
+template <class Key, class Data>
 class AVLTree {
  public:
   AVLTree() : root(nullptr) {}
@@ -60,6 +60,11 @@ class AVLTree {
     std::cout << std::endl;
     printInOrder_aux(this->root);
     std::cout << std::endl;
+  }
+
+  void PrintTree()
+  {
+    PrintTree(root, 0);
   }
 
  private:
@@ -232,9 +237,15 @@ void printInOrder_aux(Node<Key, Data>* router)
 
 }
 
+// Helper function to print the tree using ASCII art
+void PrintTree(Node<Key, Data> *node, int level) {
+  if (!node) {
+    return;
+  }
+  PrintTree(node->right, level + 2);
+  std::cout << std::string(level, ' ') << node->key << std::endl;
+  PrintTree(node->left, level + 2);
+  }
 };
-
-
-
 
 #endif

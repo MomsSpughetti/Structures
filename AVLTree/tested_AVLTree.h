@@ -62,6 +62,11 @@ class AVLTree {
     std::cout << std::endl;
   }
 
+  void PrintTree()
+  {
+    PrintTree(root, 0);
+  }
+
  private:
   Node<Key, Data> *root;
 
@@ -232,9 +237,15 @@ void printInOrder_aux(Node<Key, Data>* router)
 
 }
 
+// Helper function to print the tree using ASCII art
+void PrintTree(Node<Key, Data> *node, int level) {
+  if (!node) {
+    return;
+  }
+  PrintTree(node->right, level + 2);
+  std::cout << std::string(level, ' ') << node->key << std::endl;
+  PrintTree(node->left, level + 2);
+  }
 };
-
-
-
 
 #endif

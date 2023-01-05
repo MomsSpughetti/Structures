@@ -19,6 +19,8 @@ int main() {
 
   tree.Insert(5, "Five");
   
+  tree.PrintTree();
+
   // Find the value associated with the key 4
   std::string *value = tree.Find(4);
   if (value) {
@@ -32,7 +34,7 @@ int main() {
     std::cout << "Key not found" << std::endl; // Outputs "Key not found"
 
   tree.printInOrder();
-  
+  tree.PrintTree();
   }
   return 0;
 }
