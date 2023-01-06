@@ -74,6 +74,7 @@ Node<Key, Data>* FindByRank(int k) {
     std::cout << std::endl;
   }
 
+  //do not forget to free the returned array
   Node<Key, Data>** TreeNodesToArray()
   {
     Node<Key, Data>** array = new Node<Key, Data>*[this->root->size];

@@ -128,8 +128,26 @@ class HashTable {
     
   }
 
-//Errors
+  //do not forget to free the returned array
+  Data** get_data()
+  {
+    Data** valid = new Data*[this->count_];
+    int j = 0;
 
+    for (int i = 0; i < this->size_; i++)
+    {
+      Node* node = table_[i];
+      while (node && j < this->count_)
+      {
+        valid[j] = &(node->data);
+        j++;
+        node = node->next;
+      }
+      
+    }
+    
+    return valid;
+  }
 
  private:
   struct Node {
