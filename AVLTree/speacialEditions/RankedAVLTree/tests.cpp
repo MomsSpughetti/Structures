@@ -4,7 +4,7 @@
 #include <cassert>
 
 int main() {
-  AVLTree<int, std::string> tree;
+  RankedAVLTree<int, std::string> tree;
 
   // Test the insert function
   tree.Insert(5, "apple");

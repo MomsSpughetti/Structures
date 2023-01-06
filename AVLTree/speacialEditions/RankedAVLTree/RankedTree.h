@@ -33,11 +33,11 @@ class Node {
 
 // AVL tree class template
 template <typename Key, typename Data>
-class AVLTree {
+class RankedAVLTree {
  public:
-  AVLTree() : root(nullptr) {}
+ RankedAVLTree() : root(nullptr) {}
 
-  ~AVLTree() {
+  ~RankedAVLTree() {
     DeleteTree(root);
   }
 
