@@ -130,6 +130,8 @@ class HashTable {
 
 //Errors
 
+
+ private:
   struct Node {
     Key key;
     Data data;
@@ -139,7 +141,7 @@ class HashTable {
   Node **table_;
   int count_ = 0;
 
- private:
+
   void resize(int new_size) {
     Node **new_table = new Node*[new_size]();
     for (int i = 0; i < size_; i++) {

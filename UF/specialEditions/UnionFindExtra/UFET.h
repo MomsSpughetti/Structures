@@ -102,8 +102,8 @@ class UnionFindExtra {
   }
 
 
-  template <class K, class D, class E>
-  friend std::ostream& operator<<(std::ostream&, const UnionFindExtra<K, D, E>&);
+  template <class D, class E>
+  friend std::ostream& operator<<(std::ostream& os, UnionFindExtra<int, D, E>& obj);
 
   HashTable<Key, Node<Key, Data, Extra>*> forest;
  private:
@@ -170,8 +170,8 @@ class UnionFindExtra {
 
     try
     {
-    //works when the keys are from 0 to count_!
-    for (int i = 0; i < obj.forest.count_; i++)
+    //works when the keys are from 0 to size()!
+    for (int i = 0; i < obj.forest.size(); i++)
     {
       //get the parent of node with key i
       Node<int, D, E>* parent = obj.Find(i);
@@ -195,7 +195,7 @@ class UnionFindExtra {
       std::cerr << e.what() << '\n';
     }
     
-    for (int i = 0; i < obj.forest.count_; i++)
+    for (int i = 0; i < obj.forest.size(); i++)
     {
       int* pp = parents.get(i);
       if(!pp)
