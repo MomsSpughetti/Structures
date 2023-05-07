@@ -5,15 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ Launch",
+            "name": "Launch",
             "type": "cppdbg",
             "request": "launch",
-            //"program": "C://Users//abdal//Technion//Data_Structures//Structures//UF//specialEditions//UnionFindExtra//lab.exe",
-            //"program": "C://Users//abdal//Technion//Data_Structures//Structures//HashTable//lab.exe",
-            "program": "C://Users//abdal//Technion//Data_Structures//Structures//AVLTree//speacialEditions//RankedAVLTree//lab.exe",
-            "environment": [{ "name": "config", "value": "Debug" }],
-            "cwd": "${workspaceFolder}"
+            "program": "${workspaceRoot}/Structures/prog",
+            "environment": [{"name" : "config", "value": "Debug"}],
+            "cwd": "."
         }
-
     ]
 }
