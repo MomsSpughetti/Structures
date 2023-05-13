@@ -152,10 +152,10 @@ Node<Key, Data>* FindByRank(int k) {
         if (!no) {
             if(!nodeToInsert)
               return new Node<Key, Data>(key, data);
-            else {
+            else {/*
               nodeToInsert->parent = nullptr;
               nodeToInsert->left = nullptr;
-              nodeToInsert->right = nullptr;
+              nodeToInsert->right = nullptr;*/
               return nodeToInsert;
             }
         }
@@ -222,6 +222,7 @@ void swapSonParent(Node<Key, Data> *son, Node<Key, Data> *father, Node<Key, Data
     if(dst->left)
       dst->left->parent = dst;
     dst->parent = source->parent;
+    source->parent = dst->parent;
   }
 
   void replaceParents(Node<Key, Data>* Water, Node<Key, Data>* Fire){
@@ -288,7 +289,17 @@ void swapNodes(Node<Key, Data> *Fire, Node<Key, Data> *Water){
     root = Fire;
 }
 
-Node<Key, Data>* Remove(Node<Key, Data> *no, const Key &key, bool IsToDelete = 1, Node<Key, Data>** removed = nullptr) {
+void ModifyParentOfDeleted(Node<Key, Data> *no){
+  if(no && no->parent){
+    if(no->parent->left && no->parent->left->key == no->key){
+      no->parent->left = nullptr;
+    } else {
+      no->parent->right = nullptr;
+    }
+  }
+}
+//has bugs
+Node<Key, Data>* RemoveKeepingPointers(Node<Key, Data> *no, const Key &key, bool IsToDelete = 1, Node<Key, Data>** removed = nullptr) {
   if (!no) {
     return nullptr;
   }
@@ -306,8 +317,17 @@ Node<Key, Data>* Remove(Node<Key, Data> *no, const Key &key, bool IsToDelete = 1
       if (!temp) 
       {
         //is there a need that parent points now to null in the deleted child ptr?
-        if(IsToDelete)
+        if(IsToDelete){
+          //ModifyParentOfDeleted(no);
+        if(no->parent){
+          if(no->parent->left && no->parent->left->key == no->key){
+            no->parent->left = nullptr;
+          } else {
+            no->parent->right = nullptr;
+          }
+        }
           delete no;
+        }
         else
           (*removed) = no;
         return nullptr;
@@ -318,8 +338,10 @@ Node<Key, Data>* Remove(Node<Key, Data> *no, const Key &key, bool IsToDelete = 1
       temp->left = nullptr;
       temp->right = nullptr;
 
-      if(IsToDelete)
-        delete toDelete;
+      if(IsToDelete){
+          //ModifyParentOfDeleted(toDelete);
+          delete toDelete;
+      }
       else
         (*removed) = toDelete;
 
@@ -329,6 +351,41 @@ Node<Key, Data>* Remove(Node<Key, Data> *no, const Key &key, bool IsToDelete = 1
       swapNodes(temp, no);
       temp->right = Remove(temp->right, no->key, IsToDelete, removed);
       no = temp;
+    }
+  }
+  no->size = 1 + GetSize(no->left) + GetSize(no->right);
+  no->height = 1 + std::max(GetHeight(no->left), GetHeight(no->right));
+  return Balance(no);
+}
+
+Node<Key, Data>* Remove(Node<Key, Data> *no, const Key &key, bool IsToDelete = 1, Node<Key, Data>** removed = nullptr) {
+  if (!no) {
+    return nullptr;
+  }
+  if (key > no->key) 
+  {
+    no->right = Remove(no->right, key);
+  } else if (key < no->key) 
+  {
+    no->left = Remove(no->left, key);
+  } else 
+  {
+    if (!no->left || !no->right) 
+    {
+      Node<Key, Data> *temp = no->left ? no->left : no->right;
+      if (!temp) 
+      {
+        delete no;
+        return nullptr;
+      }
+      *no = *temp;
+      delete temp;
+    } else 
+    {
+      Node<Key, Data> *temp = FindMin(no->right);
+      no->key = temp->key;
+      no->data = temp->data;
+      no->right = Remove(no->right, temp->key);
     }
   }
   no->size = 1 + GetSize(no->left) + GetSize(no->right);

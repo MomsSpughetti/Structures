@@ -33,6 +33,7 @@ int main() {
   for (int i = 0; i < 100; i++)
   {
     tree.Remove(i);
+    tree.Remove(i);
     tree.Insert(i, newData);
   }
   
