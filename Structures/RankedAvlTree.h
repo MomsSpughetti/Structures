@@ -43,14 +43,20 @@ class RankedAVLTree {
     DeleteTree(root);
   }
 
-  void Insert(const Key &key, const Data &data) {
-    if(!FindNode(root, key))
+  bool Insert(const Key &key, const Data &data) {
+    if(!FindNode(root, key)){
       root = InsertNode(root, key, data);
+      return true;
+    }
+    return false;
   }
 
-  void Remove(const Key &key) {
-    if(FindNode(root, key))
+  bool Remove(const Key &key) {
+    if(FindNode(root, key)){
       root = Remove(root, key);
+      return true;
+    }
+    return false;
   }
 
 
@@ -69,8 +75,6 @@ class RankedAVLTree {
     if(!(temp->key == prevKey)) {return;}
     
     Node<Key, Data>* removed;
-      if(prevKey == 13 || prevKey == 11)
-      std::cout << "";
     root = Remove(root, prevKey, 0, &removed);
     if(removed){
     (removed)->key = newkey;
@@ -88,6 +92,14 @@ int GetRank(const Key &key) {
   return GetRank(root, key);
 }
 
+Data* Max() const{
+  Node<Key, Data>* maxNode = getMaxNode();
+  if(!maxNode){
+    return nullptr;
+  }
+
+  return &(maxNode->data);
+}
 Node<Key, Data>* FindByRank(int k) {
   return FindByRank(root, k);
 }
@@ -102,10 +114,21 @@ Node<Key, Data>* FindByRank(int k) {
   Node<Key, Data>** TreeNodesToArray()
   {
     if(!this->root)
-    return nullptr;
+      return nullptr;
     Node<Key, Data>** array = new Node<Key, Data>*[this->root->size];
     int place = 0;
-    TreeNodesToArray(this->root, array, place);
+    TreeNodesToNodesArray(this->root, array, place);
+    return array;
+  }
+
+  Data* TreeNodesToDataArray(int &N)
+  {
+    if(!this->root)
+      return nullptr;
+    Data* array = new Data[this->root->size];
+    int place = 0;
+    N = this->root->size;
+    TreeNodesToDataArray(this->root, array, place);
     return array;
   }
 
@@ -336,16 +359,14 @@ Node<Key, Data>* FindNode(Node<Key, Data> *no, const Key &key) {
   if (!no) {
     return nullptr;
   }
-  if (key == no->key) 
-  {
+  if (key == no->key){
     return no;
-  } else if (key < no->key) 
-  {
+  } else if (key < no->key){
     return FindNode(no->left, key);
-  } else 
-  {
+  } else {
     return FindNode(no->right, key);
   }
+  return nullptr;
 }
 Node<Key, Data>* FindByRank(Node<Key, Data> *no, int k) {
   if (!no) {
@@ -475,20 +496,40 @@ void printInOrder_aux(Node<Key, Data>* router)
 
 }
 
-  void TreeNodesToArray(Node<Key, Data>* node, Node<Key, Data>** arr, int &i)
+  void TreeNodesToNodesArray(Node<Key, Data>* node, Node<Key, Data>** arr, int &i)
   {
     if(!node)
     {
       return;
     }
 
-    TreeNodesToArray(node->left, arr, i);
+    TreeNodesToNodesArray(node->left, arr, i);
     arr[i] = node;
     i++;
-    TreeNodesToArray(node->right, arr, i);
+    TreeNodesToNodesArray(node->right, arr, i);
   }
 
+  void TreeNodesToDataArray(Node<Key, Data>* node, Data* arr, int &i)
+  {
+    if(!node)
+    {
+      return;
+    }
 
+    TreeNodesToDataArray(node->left, arr, i);
+    arr[i] = node->data;
+    i++;
+    TreeNodesToDataArray(node->right, arr, i);
+  }
+
+  Node<Key, Data>* getMaxNode() const{
+    Node<Key, Data>* max = root;
+    while (max && max->right) 
+    {
+      max = max->right;
+    }
+    return max;
+  }
 };
 
 
