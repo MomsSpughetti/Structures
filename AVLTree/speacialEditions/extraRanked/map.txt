@@ -1,0 +1,15 @@
+Description:
+    This tree, in addition of being a ranked AVL tree, it supports ranges.
+    Example: 
+        add X for each node with Z <= K <= M 
+        with O(log(n)) time complexity
+        The wanted value should be the sum of extras from the node to the root.
+To do:
+    -add extra member in node
+    -update rotations (need update?)
+    -add functions:
+        -getExtraSumFromRootToNode
+        -updateRange(node i, node j)
+    -update:
+        -remove:
+        -add:

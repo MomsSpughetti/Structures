@@ -8,7 +8,7 @@ supports size changing!
 #ifndef _HASH_TABLE_
 #define _HASH_TABLE_
 
-#include "../prime/prime.h"
+#include "prime.h"
 
 template <typename Key, typename Data>
 class HashTable {

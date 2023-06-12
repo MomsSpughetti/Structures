@@ -8,7 +8,7 @@
             "name": "Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/Structures/prog",
+            "program": "${workspaceRoot}/AVLTree/speacialEditions/extraRanked/prog",
             "environment": [{"name" : "config", "value": "Debug"}],
             "cwd": "."
         }

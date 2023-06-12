@@ -133,7 +133,7 @@ Node<Key, Data>* FindByRank(int k) {
   }
 
   int get_size() const{
-    return root->size;
+    return (!root) ? 0 : root->size;
   }
 
   Key& getIdByReference(const Key& key)
