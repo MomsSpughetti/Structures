@@ -3,7 +3,7 @@
 
 int main() {
   // Create an AVL tree with integer keys and string values
-  RankedAVLTree<int, std::string, int> tree;
+  RankedAVLTreeExtra<int, std::string, int> tree;
   // Insert some key-value pairs
 
   tree.printInOrder();
