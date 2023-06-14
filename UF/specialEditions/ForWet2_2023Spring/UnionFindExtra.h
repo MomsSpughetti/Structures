@@ -23,7 +23,9 @@ If it is, then it decreases the capacity of the upSideDownTree array by a factor
     Extra() - the empty contructor should set the new object to a neutral value => like 0 for - and +
     Kind Extra sholud have operator+ and operato-!
     the operator action doesn't have to suit his name!
-    Extra should have a function called extraCalc(Extra &)!
+    Extra should have a function called extraCalc(Extra &, bool is_B_BiggerThan_A)!
+    when A is the tree of obj1 and B is the tree of obj2 in Union function
+    union(A,B) => "put A on B"
 */
 template <class Key, class Data, class Extra>
 class NodeExtra
@@ -45,10 +47,10 @@ public:
   UnionFindExtra() = default;
   ~UnionFindExtra()
   {
-    NodeExtra<Key, Data, Extra> *** GG = forest.get_data();
+    NodeExtra<Key, Data, Extra> ** GG = forest.get_data();
     for (int i = 0; i < forest.size(); i++)
     {
-      delete *GG[i];
+      delete GG[i];
     }
 
     delete [] GG;
@@ -57,11 +59,6 @@ public:
   // Obj_1 comes first
   void Union(Key keyForObj_1, Key keyForObj_2)
   {
-
-    if(std::is_same<int, Key>::value && keyForObj_2 == 92891)
-    {
-      std::cout << "";
-    }
 
     NodeExtra<Key, Data, Extra> **Obj_1Rootp = forest.get(keyForObj_1);
     NodeExtra<Key, Data, Extra> **Obj_2Rootp = forest.get(keyForObj_2);
@@ -90,7 +87,10 @@ public:
       //Obj_1Root->extra = Obj_1Root->extra - Obj_2Root->extra;
 
       //additional calculations
-      Obj_1Root->extra.extraCalc(Obj_2Root->extra);
+      //obj1_root->extra = obj2_root->extra 
+      Obj_1Root->extra.extraCalc(Obj_2Root->extra, true);
+      Obj_2Root->rank += Obj_1Root->rank;
+
     }
     else if (Obj_1Root->rank > Obj_2Root->rank)
     { // case 2
@@ -102,16 +102,17 @@ public:
       // Obj_1Root->extra = Obj_1Root->extra
 
       //additional calculations
-      Obj_2Root->extra.extraCalc(Obj_1Root->extra);
+      Obj_2Root->extra.extraCalc(Obj_1Root->extra, false);
+      Obj_1Root->rank += Obj_2Root->rank;
+
     }
     else
     { // case 3
 
-      Obj_2Root->parent = Obj_1Root;
+      Obj_1Root->parent = Obj_2Root;
       //additional calculations
-      Obj_2Root->extra.extraCalc(Obj_1Root->extra);
-
-      Obj_1Root->rank++;
+      Obj_1Root->extra.extraCalc(Obj_2Root->extra, true);
+      Obj_2Root->rank += Obj_1Root->rank;
     }
   }
 
@@ -198,7 +199,6 @@ private:
   Extra FindSumOfExtrasFromNode_x_ToRoot(NodeExtra<Key, Data, Extra> *x)
   {
     Extra sum;
-    sum.Initialize(x->extra.player_);
     NodeExtra<Key, Data, Extra> *temp = x; // no need for temp, but looks nicer with it
     while (temp)
     {
@@ -214,12 +214,12 @@ private:
 
     //decrease the root
     NodeExtra<Key, Data, Extra>* rootOfX = FindWithOutKyvoots(x);
-    sumOfExtras = sumOfExtras % rootOfX->extra;
+    sumOfExtras = sumOfExtras - rootOfX->extra;
 
     Extra PrevExtra; // Extra() - the empty contructor should set the new object to a neutral value => like 0 for - and +
     NodeExtra<Key, Data, Extra> *temp = x;
 
-    // it does not affect the root nor the first son in the series
+    // it does not affect the root
     while (temp->parent && temp->parent->parent)
     {
       sumOfExtras -= PrevExtra;
@@ -307,7 +307,8 @@ std::ostream &operator<<(std::ostream &os, UnionFindExtra<int, D, E> &obj)
     std::cout << std::endl;
     std::cout << "[" << i << ", " << *pp << "] ";
   }
-  parents.Table_Diagram();
+  std::cout << std::endl;
+  obj.forest.Table_Diagram();
   std::cout << std::endl;
   return os;
 }

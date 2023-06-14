@@ -5,7 +5,7 @@
 #include "RankedAvlTreeExtra.h"
 
 /*
-Hash table
+Hash table - the best version - magical distribution - no need for prime handling
 
 supports size changing!
 

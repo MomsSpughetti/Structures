@@ -1,2 +1,19 @@
 to-do:
     see extra of UF ...
+class extra:
+    int ColumnHeight;
+    int helperToCalcHeightOfRecord;
+
+in extraCalc(Extra&, bool rootIsTheBase):
+    if(rootIsTheBase)
+    -correct the helperToCalcHeightOfRecord of the old root: 
+        oldRoot.helperToCalcHeightOfRecord += (newExtra.ColumnHeight - newExtra.helperToCalcHeightOfRecord) (the height of the base column before updating it)
+    -update ColumnHeight in the recieved extra (which is the extra of the new root): 
+        newExtra.ColumnHeight += this->ColumnHeight
+    else:
+    -correct the helperToCalcHeightOfRecord of the new root: 
+        newRoot->extra.helperToCalcHeightOfRecord += (oldExtra.ColumnHeight)
+    -correct the helperToCalcHeightOfRecord of the old root: 
+        oldRoot->extra.helperToCalcHeightOfRecord -= (newExtra.helperToCalcHeightOfRecord)
+    -update ColumnHeight in the recieved extra (which is the extra of the new root): 
+        newExtra.ColumnHeight += this->ColumnHeight

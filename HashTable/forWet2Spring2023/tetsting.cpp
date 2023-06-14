@@ -1,4 +1,4 @@
-#include "HashTable.h"
+#include "HashTablecopy.h"
 
 int mainn() {
 
@@ -99,6 +99,11 @@ int main()
   delete [] arr;
 
   ht.Table_Diagram();
-  
+  for (int i = 6; i < 30; i+=1)
+  {
+    ht.remove(i);
+  }
+    ht.Table_Diagram();
+
   return 0;
 }
