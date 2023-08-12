@@ -8,8 +8,6 @@ decrements the size variable, and then checks if the size is less than or equal 
 If it is, then it decreases the capacity of the upSideDownTree array by a factor of 2.
 */
 
-// --------------------------DO NOT FORGET TO MODIFY THE CODE THAT THEY WON'T KNOW!-------------------------//
-
 #ifndef _UFC_
 #define _UFC_
 
